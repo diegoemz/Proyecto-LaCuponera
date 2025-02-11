@@ -2,7 +2,7 @@ function App() {
 
   return (
     <>
-      <p>Hola Diego Morales, te odio</p>
+      <p>...</p>
     </>
   )
 }
