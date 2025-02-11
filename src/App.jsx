@@ -2,7 +2,7 @@ function App() {
 
   return (
     <>
-      <p>Hola grupo</p>
+      <p>Hola Diego Morales, te odio</p>
     </>
   )
 }
