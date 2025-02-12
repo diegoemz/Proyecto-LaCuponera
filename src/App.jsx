@@ -1,10 +1,12 @@
-function App() {
+import React from 'react';
+import Cupon from './components/cupon';
 
-  return (
-    <>
-      <p>...</p>
-    </>
-  )
-}
+const App = () => {
+    return (
+        <div>
+            <Cupon />
+        </div>
+    );
+};
 
-export default App
+export default App;
