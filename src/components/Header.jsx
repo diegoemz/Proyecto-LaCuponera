@@ -1,13 +1,16 @@
 import React from 'react';
-import '../css/header.css'; // Corrected import path
+import '../css/header.css';
 
-export function Header() {
+export function Header({ onCategorySelect }) {
     return (
         <header>
             <nav className="navbar navbar-expand-lg bg-light">
                 <div className="container-fluid">
                     <div className="d-flex justify-content-between align-items-center w-100">
-                        <a className="navbar-brand" href="#">
+                        <a className="navbar-brand" href="#" onClick={(e) => {
+                            e.preventDefault();
+                            window.location.href = "/";
+                        }}>
                             <img
                                 src="/img/LogoCuponera.png"
                                 alt="Logo de Cuponera"
@@ -25,7 +28,7 @@ export function Header() {
                     </div>
                 </div>
             </nav>
-            <nav className="navbar navbar-expand-lg bg-light">
+            <nav className="navbar navbar-expand-lg py-4">
                 <div className="container-fluid">
                     <button
                         className="navbar-toggler"
@@ -40,21 +43,16 @@ export function Header() {
                     </button>
                     <div className="collapse navbar-collapse justify-content-center" id="navbarNavAltMarkup">
                         <div className="navbar-nav" style={{ padding: '0px 15px' }}>
-                            <a className="nav-link" href="#" aria-label="Belleza">
-                                <i className="fas fa-spa"></i> Belleza
-                            </a>
-                            <a className="nav-link" href="#" aria-label="Comida">
-                                <i className="fas fa-utensils"></i> Comida
-                            </a>
-                            <a className="nav-link" href="#" aria-label="Servicios">
-                                <i className="fas fa-concierge-bell"></i> Servicios
-                            </a>
-                            <a className="nav-link" href="#" aria-label="Viajes">
-                                <i className="fas fa-plane"></i> Viajes
-                            </a>
-                            <a className="nav-link" href="#" aria-label="Cosas que hacer">
-                                <i className="fas fa-calendar-alt"></i> Cosas que hacer
-                            </a>
+                            {["Belleza", "Comida", "Servicios", "Viajes", "Cosas que hacer"].map((categoria) => (
+                                <a
+                                    key={categoria}
+                                    className="nav-link"
+                                    href="#"
+                                    onClick={() => onCategorySelect(categoria)}
+                                >
+                                    {categoria}
+                                </a>
+                            ))}
                         </div>
                     </div>
                 </div>
