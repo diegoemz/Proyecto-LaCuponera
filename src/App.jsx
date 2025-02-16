@@ -10,6 +10,7 @@ import { Footer } from "./components/footer.jsx";
 
 function App() {
   const [cupones, setCupones] = useState([]);
+  const [categoriaSeleccionada, setCategoriaSeleccionada] = useState(null);
 
   useEffect(() => {
     const obtenerCupones = async () => {
@@ -25,11 +26,16 @@ function App() {
     obtenerCupones();
   }, []);
 
+  // Filtrar cupones según la categoría seleccionada
+  const cuponesFiltrados = categoriaSeleccionada
+    ? cupones.filter(cupon => cupon.categoria === categoriaSeleccionada)
+    : cupones;
+
   return (
-    <div>
-      <Header />
+    <div style={{ backgroundColor: "rgb(227, 238, 206)", minHeight: "100vh" }}>
+      <Header onCategorySelect={setCategoriaSeleccionada} />
       <Carousel />
-      <Cupon cupones={cupones} />
+      <Cupon cupones={cuponesFiltrados} />
       <Footer />
     </div>
   );

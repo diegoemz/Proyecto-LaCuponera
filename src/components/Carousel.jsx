@@ -17,7 +17,15 @@ export function Carousel(){
                 src='/img/prueba1.jpg'
                 className="d-block w-100 h-100"
                 style={{ objectFit: 'cover' }}
-                alt="Teatro"
+                alt="Foto 1"
+              />
+            </div>
+            <div className="carousel-item" style={{ height: '100%' }}>
+              <img
+                src='/img/carrusel1.jpg'
+                className="d-block w-100 h-100"
+                style={{ objectFit: 'cover' }}
+                alt="Foto 2"
               />
             </div>
             <div className="carousel-item" style={{ height: '100%' }}>
@@ -25,7 +33,7 @@ export function Carousel(){
                 src='/img/prueba3.jpg'
                 className="d-block w-100 h-100"
                 style={{ objectFit: 'cover' }}
-                alt="Desarrollo"
+                alt="Foto 3"
               />
             </div>
           </div>

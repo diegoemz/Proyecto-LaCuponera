@@ -1,0 +1,5 @@
+.emoji-link {
+    font-size: 1.5rem; /* Adjust the size as needed */
+    line-height: 1; /* Remove extra line-height */
+    vertical-align: middle; /* Vertically center the emoji */
+}
