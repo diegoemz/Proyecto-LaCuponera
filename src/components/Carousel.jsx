@@ -5,7 +5,7 @@ export function Carousel(){
           id="carouselExample"
           className="carousel slide"
           style={{
-            width: '85%',
+            width: '60%',
             height: '500px',
             overflow: 'hidden',
           }}
@@ -14,7 +14,7 @@ export function Carousel(){
           <div className="carousel-inner" style={{ height: '100%' }}>
             <div className="carousel-item active" style={{ height: '100%' }}>
               <img
-                src='/img/prueba1.jpg'
+                src='/img/cupones1.jpg'
                 className="d-block w-100 h-100"
                 style={{ objectFit: 'cover' }}
                 alt="Foto 1"
@@ -22,7 +22,7 @@ export function Carousel(){
             </div>
             <div className="carousel-item" style={{ height: '100%' }}>
               <img
-                src='/img/carrusel1.jpg'
+                src='/img/cupones2.png'
                 className="d-block w-100 h-100"
                 style={{ objectFit: 'cover' }}
                 alt="Foto 2"
@@ -30,7 +30,7 @@ export function Carousel(){
             </div>
             <div className="carousel-item" style={{ height: '100%' }}>
               <img
-                src='/img/prueba3.jpg'
+                src='/img/cupones3.jpg'
                 className="d-block w-100 h-100"
                 style={{ objectFit: 'cover' }}
                 alt="Foto 3"
