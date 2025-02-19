@@ -4,7 +4,7 @@
     --olivine-2: #8bb174ff;
     --myrtle-green: #426b69ff;
     --space-cadet: #222e50ff;
-    --dark-slate-gray: #2a4849ff;
+    --dark-slate-gray: rgb(24, 42, 43);
   
     /* CSS HSL */
     --olivine-hsl: hsla(81, 37%, 67%, 1);

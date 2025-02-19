@@ -4,13 +4,13 @@ import '../css/header.css';
 
 export function Carousel(){
     return (
-        <div className="d-flex justify-content-center my-4" style={{ marginTop: '0'}}>
+        <div className="d-flex justify-content-center" style={{ marginTop: '0'}}>
         <div
           id="carouselExample"
           className="carousel slide"
           style={{
             width: '100%',
-            height: '500px',
+            height: '600px',
             overflow: 'hidden',
           }}
           data-bs-ride="carousel"
