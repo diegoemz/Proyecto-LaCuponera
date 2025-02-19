@@ -1,11 +1,15 @@
+import React from 'react';
+import '../css/header.css';
+
+
 export function Carousel(){
     return (
-        <div className="d-flex justify-content-center my-4">
+        <div className="d-flex justify-content-center my-4" style={{ marginTop: '0'}}>
         <div
           id="carouselExample"
           className="carousel slide"
           style={{
-            width: '60%',
+            width: '100%',
             height: '500px',
             overflow: 'hidden',
           }}
