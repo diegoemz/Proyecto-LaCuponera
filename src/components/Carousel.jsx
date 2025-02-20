@@ -10,7 +10,7 @@ export function Carousel(){
           className="carousel slide"
           style={{
             width: '100%',
-            height: '600px',
+            height: '700px',
             overflow: 'hidden',
           }}
           data-bs-ride="carousel"
