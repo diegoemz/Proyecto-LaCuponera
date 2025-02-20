@@ -1,7 +1,11 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+
 
 const Cart = ({ cupones }) => {
   const [savedCupones, setSavedCupones] = useState([]);
+  const navigate = useNavigate();
+
 
   useEffect(() => {
     const cuponesGuardados = JSON.parse(localStorage.getItem('cupones') || '[]');
@@ -216,6 +220,8 @@ const Cart = ({ cupones }) => {
                           type="button"
                           className="btn btn-info btn-block btn-lg"
                           style={{ backgroundColor: 'rgb(88, 149, 105)', borderColor: 'rgb(88, 149, 105)' }}
+                          onClick={() => navigate('/checkout')}
+
                         >
                           <div className="d-flex justify-content-between">
                             <span>

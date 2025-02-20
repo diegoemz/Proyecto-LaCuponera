@@ -12,6 +12,7 @@ import { Cupon } from "./components/cupon.jsx";
 import { Footer } from "./components/footer.jsx";
 import { Form } from "./components/Form.jsx";
 import Cart from "./components/Cart.jsx";
+import Checkout from "./components/Checkout.jsx";
 
 function CategoriaCupones({ cupones }) {
   let { categoria } = useParams();
@@ -87,7 +88,9 @@ function App() {
         <Routes>
           <Route path="/" element={<><Carousel /><Cupon cupones={cupones} /></>} />
           <Route path="/cart" element={<Cart cupones={cupones} />} />
+          <Route path="/checkout" element={<Checkout />} />
           <Route path="/category/:categoria" element={<CategoriaCupones cupones={cupones} />} />
+
         </Routes>
 
         <Footer />
