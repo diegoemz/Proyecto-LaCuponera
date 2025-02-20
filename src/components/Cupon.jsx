@@ -18,7 +18,21 @@ export function Cupon({ cupones }) {
                   <h5 className="card-title">{cupon.titulo}</h5>
                   <p className="card-text">{cupon.descripcion}</p>
                   <div className="d-flex justify-content-between">
-                    <a href="#" className="btn btn-primary">Obtener cupón</a>
+                    <button 
+                      className="btn btn-primary"
+                      onClick={() => {
+                        const cuponesGuardados = JSON.parse(localStorage.getItem('cupones') || '[]');
+                        if (!cuponesGuardados.some(c => c.id === cupon.id)) {
+                          cuponesGuardados.push(cupon);
+                          localStorage.setItem('cupones', JSON.stringify(cuponesGuardados));
+                          alert('Cupón guardado correctamente');
+                        } else {
+                          alert('Este cupón ya está guardado');
+                        }
+                      }}
+                    >
+                      Obtener cupón
+                    </button>
                     <button
                       className="btn btn-secondary"
                       type="button"
