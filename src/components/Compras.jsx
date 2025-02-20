@@ -60,6 +60,9 @@ const Compras = () => {
           <div key={compra.id} className="mb-3">
             <h5>Purchase {compra.id}</h5>
             <p><strong>Total:</strong> ${compra.total.toFixed(2)}</p>
+            <p><strong>Usuario:</strong> {compra.usuario.nombres} {compra.usuario.apellidos}</p>
+            <p><strong>Title:</strong> {compra.cupones.titulo}</p>
+            <p><strong>Code:</strong> {compra.cupones.codigo}</p>
             <p><strong>Purchase Date:</strong> {new Date(compra.fechaCompra.seconds * 1000).toLocaleString()}</p>
             <button className="btn btn-success" onClick={() => generarPDF(compra)}>Generate PDF</button>
           </div>
