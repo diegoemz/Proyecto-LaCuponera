@@ -70,15 +70,7 @@ const Cart = ({ cupones }) => {
                           <div className="card-body">
                             <div className="d-flex justify-content-between">
                               <div className="d-flex flex-row align-items-center">
-                                <div>
-                                  <img
-                                    src={cupon.imagen || "/img/default-cupon.jpg"}
-                                    className="img-fluid rounded-3"
-                                    alt="Shopping item"
-                                    style={{ width: '65px', height: '65px' }}
-                                  />
-                                </div>
-                                <div className="ms-3">
+                                <div className="ms-3 px-2">
                                   <h5>{cupon.titulo}</h5>
                                   <p className="small mb-0">{cupon.descripcion}</p>
                                 </div>
