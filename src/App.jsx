@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { db, auth } from "./firebase.js";
 import { collection, getDocs } from "firebase/firestore";
 import { onAuthStateChanged, signOut } from "firebase/auth";
@@ -9,6 +10,7 @@ import { Carousel } from "./components/Carousel.jsx";
 import { Cupon } from "./components/cupon.jsx";
 import { Footer } from "./components/footer.jsx";
 import { Form } from "./components/Form.jsx";
+import Cart from "./components/Cart.jsx";
 
 function App() {
   const [cupones, setCupones] = useState([]);
@@ -60,30 +62,39 @@ function App() {
   };
 
   return (
-    <div style={{ backgroundColor: "rgb(227, 238, 206)", minHeight: "100vh" }}>
-      <Header
-        onCategorySelect={setCategoriaSeleccionada}
-        usuario={usuario}
-        onSignInClick={() => setMostrarForm(true)}
-        onSignOutClick={handleSignOut}
-      />
-      {alerta && (
-        <div className="alert alert-info text-center" role="alert">
-          {alerta}
-        </div>
-      )}
-      {mostrarForm && !usuario && (
-        <div style={{ position: "fixed", top: 0, left: 0, right: 0, bottom: 0, backgroundColor: "rgba(0, 0, 0, 0.5)", zIndex: 1000 }}>
-          <Form
-            onAuthSuccess={() => { setUsuario(auth.currentUser); setMostrarForm(false); }}
-            onCloseForm={() => setMostrarForm(false)}
-          />
-        </div>
-      )}
-      <Carousel />
-      <Cupon cupones={cuponesFiltrados} />
-      <Footer />
-    </div>
+    <Router>
+      <div style={{ backgroundColor: "rgb(227, 238, 206)", minHeight: "100vh" }}>
+        <Header
+          onCategorySelect={setCategoriaSeleccionada}
+          usuario={usuario}
+          onSignInClick={() => setMostrarForm(true)}
+          onSignOutClick={handleSignOut}
+        />
+        {alerta && (
+          <div className="alert alert-info text-center" role="alert">
+            {alerta}
+          </div>
+        )}
+        {mostrarForm && !usuario && (
+          <div style={{ position: "fixed", top: 0, left: 0, right: 0, bottom: 0, backgroundColor: "rgba(0, 0, 0, 0.5)", zIndex: 1000 }}>
+            <Form
+              onAuthSuccess={() => { setUsuario(auth.currentUser); setMostrarForm(false); }}
+              onCloseForm={() => setMostrarForm(false)}
+            />
+          </div>
+        )}
+        <Routes>
+          <Route path="/" element={
+            <>
+              <Carousel />
+              <Cupon cupones={cuponesFiltrados} />
+            </>
+          } />
+          <Route path="/cart" element={<Cart cupones={cupones} />} />
+        </Routes>
+        <Footer />
+      </div>
+    </Router>
   );
 }
 
