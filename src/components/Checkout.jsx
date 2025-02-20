@@ -7,7 +7,7 @@ const Checkout = ({  }) => {
   const handleCopy = () => {
     navigator.clipboard.writeText(couponCode);
     setIsCopied(true);
-    setTimeout(() => setIsCopied(false), 2000); // Reset copied status after 2 seconds
+    setTimeout(() => setIsCopied(false), 2000);
   }
 
 return (

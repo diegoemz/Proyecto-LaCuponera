@@ -9,7 +9,6 @@ const Cart = ({ cupones }) => {
 
   useEffect(() => {
     const cuponesGuardados = JSON.parse(localStorage.getItem('cupones') || '[]');
-    // Merge local storage cupones with current cupones data
     const mergedCupones = cuponesGuardados.map(localCupon => {
       const fullCupon = cupones.find(c => c.id === localCupon.id);
       return { 
