@@ -15,7 +15,6 @@ export function Header({ onCategorySelect, usuario, onSignInClick }) {
 
     return (
         <header >
-            {/* Parte superior del header */}
             <nav className="navbar navbar-expand-lg navbar-light bg-light shadow-sm py-3 px-6">
                 <div className="container-fluid">
                     <a className="navbar-brand" href="/">
@@ -37,7 +36,6 @@ export function Header({ onCategorySelect, usuario, onSignInClick }) {
                 </div>
             </nav>
 
-            {/* Parte inferior del header con las categorías */}
             <nav className="navbar navbar-expand-lg py-3" style={{ backgroundColor: 'rgb(88, 149, 105)', boxShadow: '0 2px 4px rgba(0,0,0,0.2)' }}>
 
                 <div className="container-fluid justify-content-center">
