@@ -66,6 +66,7 @@ const Checkout = () => {
         cupones: cupones,
         total: total,
         fechaCompra: new Date(),
+        status: "active" // Add status field
       });
 
       localStorage.removeItem("cupones");

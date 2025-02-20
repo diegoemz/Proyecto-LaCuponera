@@ -42,7 +42,7 @@ const Recibo = () => {
               <div className="row d-flex align-items-baseline">
                 <div className="col-xl-9">
                   <p style={{ color: "#7e8d9f", fontSize: "20px" }}>
-                    Invoice >> <strong>ID: #{id}</strong>
+                    Invoice  <strong>ID: #{id}</strong>
                   </p>
                 </div>
                 <div className="col-xl-3 float-end gap-2">
@@ -67,7 +67,7 @@ const Recibo = () => {
                   <p className="text-muted">Invoice</p>
                   <ul className="list-unstyled">
                     <li className="text-muted"><span className="fw-bold">Fecha:</span> {new Date(recibo.fechaCompra.seconds * 1000).toLocaleString()}</li>
-                    <li className="text-muted"><span className="fw-bold">Estado:</span> <span className="badge bg-success text-black fw-bold">Pagado</span></li>
+                    <li className="text-muted"><span className="fw-bold">Estado:</span> <span className="badge bg-success text-black fw-bold">{recibo.status}</span></li>
                   </ul>
                 </div>
               </div>
