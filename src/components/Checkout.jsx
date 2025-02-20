@@ -59,7 +59,7 @@ const Checkout = () => {
       alert("Debe iniciar sesión para continuar.");
       return;
     }
-  
+
     try {
       const compraRef = await addDoc(collection(db, "cupones-comprados"), {
         usuario: user,
@@ -67,9 +67,9 @@ const Checkout = () => {
         total: total,
         fechaCompra: new Date(),
       });
-  
+
       localStorage.removeItem("cupones");
-  
+
       alert("Compra realizada con éxito.");
       navigate(`/recibo/${compraRef.id}`); // Redirigir a la página del recibo con el ID de compra
     } catch (error) {
@@ -77,47 +77,164 @@ const Checkout = () => {
       alert("Hubo un error al procesar la compra.");
     }
   };
-  
 
   return (
-    <div className="container mt-5">
-      <h2 className="mb-4">Confirmar Compra</h2>
+    <section className="h-100 h-custom">
+      <div className="container py-4 h-100">
+        <div className="row d-flex justify-content-center align-items-center h-300">
+          <div className="col">
+            <div className="card">
+              <div className="container mt-5 mb-5">
+                <div className="row d-flex justify-content-center">
+                  <div className="col-md-8">
+                    <div className="invoice py-3">
+                      <h5>Confirmar Compra</h5>
+                      {user ? (
+                        <>
+                          <span className="font-weight-bold d-block mt-4">Hola, {user.nombres} {user.apellidos}</span>
+                          <span>Tu compra ha sido confirmada y se procesará en breve.</span>
+                          <hr />
 
-      {user ? (
-        <div className="card p-3 mb-4">
-          <h4>Datos del Usuario</h4>
-          <p><strong>Nombre:</strong> {user.nombres} {user.apellidos}</p>
-          <p><strong>Correo:</strong> {user.email}</p>
-          <p><strong>Teléfono:</strong> {user.telefono}</p>
-          <p><strong>Dirección:</strong> {user.direccion}</p>
-          <p><strong>DUI:</strong> {user.dui}</p>
-        </div>
-      ) : (
-        <p>Cargando datos del usuario...</p>
-      )}
+                          <div className="payment-details table-responsive">
+                            <table className="table table-borderless">
+                              <tbody>
+                                <tr>
+                                  <td>
+                                    <div className="py-2">
+                                      <span className="d-block text-muted">Dirección</span>
+                                      <span>{user.direccion}</span>
+                                    </div>
+                                  </td>
+                                  <td>
+                                    <div className="py-2">
+                                      <span className="d-block text-muted">Teléfono</span>
+                                      <span>{user.telefono}</span>
+                                    </div>
+                                  </td>
+                                  <td>
+                                    <div className="py-2">
+                                      <span className="d-block text-muted">DUI</span>
+                                      <span>{user.dui}</span>
+                                    </div>
+                                  </td>
+                                </tr>
+                              </tbody>
+                            </table>
+                          </div>
+                          <hr />
 
-      <h4>Resumen de Cupones</h4>
-      {cupones.length > 0 ? (
-        cupones.map((cupon) => (
-          <div className="card p-3 mb-2" key={cupon.id}>
-            <h5>{cupon.titulo}</h5>
-            <p><strong>Descripción:</strong> {cupon.descripcion}</p>
-            <p><strong>Precio:</strong> ${cupon.precioOferta}</p>
-            <p><strong>Cantidad:</strong> {cupon.quantity}</p>
-            <p><strong>Subtotal:</strong> ${(cupon.precioOferta * cupon.quantity).toFixed(2)}</p>
-            <p><strong>Código Único:</strong> {cupon.codigo}</p>
+                          <div className="product table-responsive">
+                            <table className="table table-borderless">
+                              <tbody>
+                                {cupones.map((cupon) => (
+                                  <tr key={cupon.codigo}>
+                                    <td width="20%">
+                                      <img src={cupon.imagen || "https://via.placeholder.com/90"} width="90" alt={cupon.titulo} />
+                                    </td>
+                                    <td width="60%">
+                                      <span className="font-weight-bold">{cupon.titulo}</span> <hr />
+                                      <div className="product-qty">
+                                        <span className="d-block">Cantidad: {cupon.quantity}</span> <hr />
+                                        <span>Descripción: {cupon.descripcion}</span>
+                                      </div> <hr />
+                                    </td>
+                                    <td width="20%">
+                                      <div className="text-center">
+                                        <span className="font-weight-bold">{cupon.codigo}</span>
+                                      </div>
+                                    </td>
+                                  </tr>
+                                ))}
+                              </tbody>
+                            </table>
+                          </div>
+
+                          <div className="row d-flex justify-content-end">
+                            <div className="col-md-5">
+                              <table className="table table-borderless">
+                                <tbody className="totals">
+                                  <tr>
+                                    <td>
+                                      <div className="text-left">
+                                        <span className="text-muted">Subtotal</span>
+                                      </div>
+                                    </td>
+                                    <td>
+                                      <div className="text-right">
+                                        <span>${total.toFixed(2)}</span>
+                                      </div>
+                                    </td>
+                                  </tr>
+                                  <tr>
+                                    <td>
+                                      <div className="text-left">
+                                        <span className="text-muted">Descuento</span>
+                                      </div>
+                                    </td>
+                                    <td>
+                                      <div className="text-right">
+                                        <span className="text-success">$0.00</span>
+                                      </div>
+                                    </td>
+                                  </tr>
+                                  <tr className="border-top border-bottom">
+                                    <td>
+                                      <div className="text-left">
+                                        <span className="font-weight-bold">Total</span>
+                                      </div>
+                                    </td>
+                                    <td>
+                                      <div className="text-right">
+                                        <span className="font-weight-bold">${total.toFixed(2)}</span>
+                                      </div>
+                                    </td>
+                                  </tr>
+                                </tbody>
+                              </table>
+                            </div>
+                          </div>
+
+                          <div className="payment border-top mt-3 mb-3 border-bottom table-responsive">
+                            <table className="table table-borderless">
+                              <tbody>
+                                <tr>
+                                  <td>
+                                    <div className="py-2">
+                                      <span className="d-block text-muted">Fecha de Compra</span>
+                                      <span>{new Date().toLocaleDateString()}</span>
+                                    </div>
+                                  </td>
+                                  <td>
+                                    <div className="py-2">
+                                      <span className="d-block text-muted">Total</span>
+                                      <span>${total.toFixed(2)}</span>
+                                    </div>
+                                  </td>
+                                </tr>
+                              </tbody>
+                            </table>
+                          </div>
+
+                          <p>Te enviaremos un correo de confirmación cuando el cupón sea procesado.</p>
+                          <p className="font-weight-bold mb-0">¡Gracias por comprar con nosotros!</p>
+                          <span>El equipo de La Cuponera</span>
+                        </>
+                      ) : (
+                        <p>Cargando datos del usuario...</p>
+                      )}
+                    </div>
+
+                    <button className="btn btn-success mt-3" onClick={handleConfirmarCompra}>
+                      Confirmar Compra
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
-        ))
-      ) : (
-        <p>No hay cupones en el carrito.</p>
-      )}
-
-      <h4 className="mt-4">Total a Pagar: <span className="text-success">${total.toFixed(2)}</span></h4>
-
-      <button className="btn btn-success mt-3" onClick={handleConfirmarCompra}>
-        Confirmar Compra
-      </button>
-    </div>
+        </div>
+      </div>
+    </section>
   );
 };
 
