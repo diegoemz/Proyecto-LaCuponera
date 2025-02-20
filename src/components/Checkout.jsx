@@ -71,7 +71,7 @@ const Checkout = () => {
       localStorage.removeItem("cupones");
 
       alert("Compra realizada con éxito.");
-      navigate(`/recibo/${compraRef.id}`); // Redirigir a la página del recibo con el ID de compra
+      navigate(`/recibo/${compraRef.id}`);
     } catch (error) {
       console.error("Error al guardar la compra:", error);
       alert("Hubo un error al procesar la compra.");
