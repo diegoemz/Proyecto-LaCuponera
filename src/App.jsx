@@ -6,7 +6,7 @@ import '@fortawesome/fontawesome-free/css/all.min.css';
 import { collection, getDocs } from "firebase/firestore";
 import { onAuthStateChanged, signOut } from "firebase/auth";
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
-import { Header } from "./components/header.jsx";
+import { Header } from "./components/Header.jsx";
 import { Carousel } from "./components/Carousel.jsx";
 import { Cupon } from "./components/cupon.jsx";
 import { Footer } from "./components/footer.jsx";

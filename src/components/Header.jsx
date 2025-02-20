@@ -4,7 +4,7 @@ import { auth } from "../firebase";
 import { signOut } from "firebase/auth";
 import '../css/header.css';
 
-export function Header({ onCategorySelect, usuario, onSignInClick }) {
+export function Header({ usuario, onSignInClick }) {
     const handleSignOut = async () => {
         try {
             await signOut(auth);
@@ -16,10 +16,8 @@ export function Header({ onCategorySelect, usuario, onSignInClick }) {
 
     return (
         <header>
-            {/* Navbar principal */}
             <nav className="navbar navbar-expand-lg navbar-light bg-light shadow-sm py-3 px-6">
                 <div className="container-fluid">
-                    {/* Logo con enlace a la página de inicio */}
                     <Link className="navbar-brand" to="/">
                         <img src="/img/cuponeralogo.svg" alt="Logo de Cuponera" />
                     </Link>
@@ -32,7 +30,6 @@ export function Header({ onCategorySelect, usuario, onSignInClick }) {
                             </svg>
                         </Link>
 
-                        {/* Botón de sesión */}
                         {usuario ? (
                             <button className="btn btn-outline-danger mx-3" onClick={handleSignOut}>Cerrar Sesión</button>
                         ) : (
@@ -42,7 +39,6 @@ export function Header({ onCategorySelect, usuario, onSignInClick }) {
                 </div>
             </nav>
 
-            {/* Navbar de categorías */}
             <nav className="navbar navbar-expand-lg py-3" style={{ backgroundColor: 'rgb(88, 149, 105)', boxShadow: '0 2px 4px rgba(0,0,0,0.2)' }}>
                 <div className="container-fluid justify-content-center">
                     <div className="navbar-nav flex-row" style={{ gap: '3.5rem' }}>

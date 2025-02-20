@@ -1,11 +1,13 @@
 import React, { useState } from "react";
-import { auth, db } from "../firebase"; // Importa Firestore
+import { auth, db } from "../firebase";
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from "firebase/auth";
-import { doc, setDoc } from "firebase/firestore"; // Importa funciones de Firestore
+import { doc, setDoc } from "firebase/firestore";
 
 export const Form = ({ onAuthSuccess, onCloseForm }) => {
-    const [nombre, setNombre] = useState("");
-    const [apellido, setApellido] = useState("");
+    const [nombres, setNombre] = useState("");
+    const [apellidos, setApellido] = useState("");
+    const [telefono, setTelefono] = useState("");
+    const [direccion, setDireccion] = useState("");
     const [dui, setDui] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
@@ -19,19 +21,18 @@ export const Form = ({ onAuthSuccess, onCloseForm }) => {
         try {
             let userCredential;
             if (isRegister) {
-                // Registrar usuario en Firebase Authentication
                 userCredential = await createUserWithEmailAndPassword(auth, email, password);
                 
-                // Guardar usuario en Firestore
                 await setDoc(doc(db, "usuarios", userCredential.user.uid), {
-                    nombre,
-                    apellido,
+                    nombres,
+                    apellidos,
+                    telefono,
+                    direccion,
                     dui,
                     email,
                     createdAt: new Date()
                 });
             } else {
-                // Iniciar sesión
                 userCredential = await signInWithEmailAndPassword(auth, email, password);
             }
 
@@ -53,11 +54,19 @@ export const Form = ({ onAuthSuccess, onCloseForm }) => {
                         <>
                             <div className="mb-3">
                                 <label className="form-label">Nombre</label>
-                                <input type="text" className="form-control" value={nombre} onChange={(e) => setNombre(e.target.value)} required />
+                                <input type="text" className="form-control" value={nombres} onChange={(e) => setNombre(e.target.value)} required />
                             </div>
                             <div className="mb-3">
                                 <label className="form-label">Apellido</label>
-                                <input type="text" className="form-control" value={apellido} onChange={(e) => setApellido(e.target.value)} required />
+                                <input type="text" className="form-control" value={apellidos} onChange={(e) => setApellido(e.target.value)} required />
+                            </div>
+                            <div className="mb-3">
+                                <label className="form-label">Teléfono</label>
+                                <input type="text" className="form-control" value={telefono} onChange={(e)=> setTelefono(e.target.value)} required />
+                            </div>
+                            <div className="mb-3">
+                                <label className="form-label">Dirección</label>
+                                <input type="text" className="form-control" value={direccion} onChange={(e) => setDireccion(e.target.value)} required />
                             </div>
                             <div className="mb-3">
                                 <label className="form-label">DUI</label>
