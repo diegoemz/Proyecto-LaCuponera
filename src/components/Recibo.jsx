@@ -34,7 +34,6 @@ const Recibo = () => {
 
   return (
     <section className="h-100 h-custom">
-<<<<<<< Updated upstream
     <div className="container py-4 h-100">
       <div className="row d-flex justify-content-center align-items-center h-300">
         <div className="card">
@@ -112,72 +111,12 @@ const Recibo = () => {
               <div className="row">
                 <div className="col-xl-10">
                   <p>Gracias por su compra</p>
-=======
-      <div className="container py-4 h-100">
-        <div className="row d-flex justify-content-center align-items-center">
-          <div className="col">
-            <div className="card">
-              <div className="container mt-5 mb-5">
-                <h5>Recibo de Compra</h5>
-                <div className="invoice py-3">
-                  <div>
-                    <span className="font-weight-bold">Nombre:</span> {recibo.usuario.nombres} {recibo.usuario.apellidos}
-                  </div>
-                  <div>
-                    <span className="font-weight-bold">Email:</span> {recibo.usuario.email}
-                  </div>
-                  <div>
-                    <span className="font-weight-bold">Teléfono:</span> {recibo.usuario.telefono}
-                  </div>
-                  <div>
-                    <span className="font-weight-bold">Dirección:</span> {recibo.usuario.direccion}
-                  </div>
-                  <hr />
-
-                  <div className="product table-responsive">
-                    <h5>Cupones Comprados</h5>
-                    <table className="table table-borderless">
-                      <tbody>
-                        {recibo.cupones.map((cupon, index) => (
-                          <tr key={index}>
-                            <td width="20%">
-                              <img src={cupon.imagen || "https://via.placeholder.com/90"} width="90" alt={cupon.titulo} />
-                            </td>
-                            <td width="60%">
-                              <span className="font-weight-bold">{cupon.titulo}</span> <hr />
-                              <div className="product-qty">
-                                <span>Cantidad: {cupon.quantity}</span> <hr />
-                                <span>Descripción: {cupon.descripcion}</span>
-                              </div>
-                            </td>
-                            <td width="20%" className="text-center">
-                              <span className="font-weight-bold">{cupon.codigo}</span>
-                            </td>
-                          </tr>
-                        ))}
-                      </tbody>
-                    </table>
-                  </div>
-
-                  <div className="totals text-right">
-                    <hr />
-                    <div className="font-weight-bold">Total Pagado: ${recibo.total.toFixed(2)}</div>
-                    <div><strong>Fecha de Compra:</strong> {new Date(recibo.fechaCompra.seconds * 1000).toLocaleString()}</div>
-                  </div>
-
-                  <p>Te enviaremos un correo de confirmación cuando el cupón sea procesado.</p>
-                  <p className="font-weight-bold mb-0">¡Gracias por comprar con nosotros!</p>
-                  <span>El equipo de La Cuponera</span>
->>>>>>> Stashed changes
                 </div>
               </div>
             </div>
           </div>
         </div>
-<<<<<<< Updated upstream
         </div>
-=======
->>>>>>> Stashed changes
       </div>
     </section>
   );
