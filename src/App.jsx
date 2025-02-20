@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route, useParams } from "react-router-dom";
 import { db, auth } from "./firebase.js";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '@fortawesome/fontawesome-free/css/all.min.css';
@@ -13,9 +13,19 @@ import { Footer } from "./components/footer.jsx";
 import { Form } from "./components/Form.jsx";
 import Cart from "./components/Cart.jsx";
 
+function CategoriaCupones({ cupones }) {
+  let { categoria } = useParams();
+  const cuponesFiltrados = cupones.filter(cupon => cupon.categoria.toLowerCase() === categoria.toLowerCase());
+
+  return (
+    <>
+      <Cupon cupones={cuponesFiltrados} />
+    </>
+  );
+}
+
 function App() {
   const [cupones, setCupones] = useState([]);
-  const [categoriaSeleccionada, setCategoriaSeleccionada] = useState(null);
   const [usuario, setUsuario] = useState(null);
   const [mostrarForm, setMostrarForm] = useState(false);
   const [alerta, setAlerta] = useState(null);
@@ -30,7 +40,6 @@ function App() {
         console.error("Error al obtener cupones:", error);
       }
     };
-
     obtenerCupones();
   }, []);
 
@@ -39,19 +48,15 @@ function App() {
       if (user) {
         setUsuario(user);
         setAlerta("¡Has iniciado sesión correctamente!");
-        setTimeout(() => setAlerta(null), 3000); 
+        setTimeout(() => setAlerta(null), 3000);
       } else {
         setUsuario(null);
         setAlerta("Has cerrado sesión.");
-        setTimeout(() => setAlerta(null), 3000);  
+        setTimeout(() => setAlerta(null), 3000);
       }
     });
     return () => unsubscribe();
   }, []);
-
-  const cuponesFiltrados = categoriaSeleccionada
-    ? cupones.filter(cupon => cupon.categoria === categoriaSeleccionada)
-    : cupones;
 
   const handleSignOut = async () => {
     try {
@@ -65,34 +70,26 @@ function App() {
   return (
     <Router>
       <div style={{ backgroundColor: "rgb(227, 238, 206)", minHeight: "100vh" }}>
-        <Header
-          onCategorySelect={setCategoriaSeleccionada}
-          usuario={usuario}
-          onSignInClick={() => setMostrarForm(true)}
-          onSignOutClick={handleSignOut}
-        />
+        <Header usuario={usuario} onSignInClick={() => setMostrarForm(true)} onSignOutClick={handleSignOut} />
+        
         {alerta && (
           <div className="alert alert-info text-center" role="alert">
             {alerta}
           </div>
         )}
+
         {mostrarForm && !usuario && (
           <div style={{ position: "fixed", top: 0, left: 0, right: 0, bottom: 0, backgroundColor: "rgba(0, 0, 0, 0.5)", zIndex: 1000 }}>
-            <Form
-              onAuthSuccess={() => { setUsuario(auth.currentUser); setMostrarForm(false); }}
-              onCloseForm={() => setMostrarForm(false)}
-            />
+            <Form onAuthSuccess={() => { setUsuario(auth.currentUser); setMostrarForm(false); }} onCloseForm={() => setMostrarForm(false)} />
           </div>
         )}
+
         <Routes>
-          <Route path="/" element={
-            <>
-              <Carousel />
-              <Cupon cupones={cuponesFiltrados} />
-            </>
-          } />
+          <Route path="/" element={<><Carousel /><Cupon cupones={cupones} /></>} />
           <Route path="/cart" element={<Cart cupones={cupones} />} />
+          <Route path="/category/:categoria" element={<CategoriaCupones cupones={cupones} />} />
         </Routes>
+
         <Footer />
       </div>
     </Router>
