@@ -53,11 +53,11 @@ export const Form = ({ onAuthSuccess, onCloseForm }) => {
                     {isRegister && (
                         <>
                             <div className="mb-3">
-                                <label className="form-label">Nombre</label>
+                                <label className="form-label">Nombres</label>
                                 <input type="text" className="form-control" value={nombres} onChange={(e) => setNombre(e.target.value)} required />
                             </div>
                             <div className="mb-3">
-                                <label className="form-label">Apellido</label>
+                                <label className="form-label">Apellidos</label>
                                 <input type="text" className="form-control" value={apellidos} onChange={(e) => setApellido(e.target.value)} required />
                             </div>
                             <div className="mb-3">
