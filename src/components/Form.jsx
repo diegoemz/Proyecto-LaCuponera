@@ -22,7 +22,7 @@ export const Form = ({ onAuthSuccess, onCloseForm }) => {
             let userCredential;
             if (isRegister) {
                 userCredential = await createUserWithEmailAndPassword(auth, email, password);
-                
+
                 await setDoc(doc(db, "usuarios", userCredential.user.uid), {
                     nombres,
                     apellidos,
@@ -45,7 +45,9 @@ export const Form = ({ onAuthSuccess, onCloseForm }) => {
 
     return (
         <div className="container d-flex justify-content-center mt-5">
-            <div className="card p-4 shadow" style={{ width: "25rem", backgroundColor: "#d4edda" }}>
+            <div
+                className="card p-4 shadow"
+                style={{ width: "25rem", backgroundColor: "#d4edda", maxHeight: "80vh", overflowY: "auto" }}>
                 <button className="btn-close" onClick={onCloseForm}></button>
                 <h2 className="text-center">{isRegister ? "Registro" : "Iniciar Sesión"}</h2>
                 {error && <div className="alert alert-danger">{error}</div>}
@@ -62,7 +64,7 @@ export const Form = ({ onAuthSuccess, onCloseForm }) => {
                             </div>
                             <div className="mb-3">
                                 <label className="form-label">Teléfono</label>
-                                <input type="text" className="form-control" value={telefono} onChange={(e)=> setTelefono(e.target.value)} required />
+                                <input type="text" className="form-control" value={telefono} onChange={(e) => setTelefono(e.target.value)} required />
                             </div>
                             <div className="mb-3">
                                 <label className="form-label">Dirección</label>
