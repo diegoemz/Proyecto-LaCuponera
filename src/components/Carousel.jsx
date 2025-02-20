@@ -26,7 +26,7 @@ export function Carousel(){
             </div>
             <div className="carousel-item" style={{ height: '100%' }}>
               <img
-                src='/img/cupones2.png'
+                src='/img/cupones2.jpg'
                 className="d-block w-100 h-100"
                 style={{ objectFit: 'cover' }}
                 alt="Foto 2"
