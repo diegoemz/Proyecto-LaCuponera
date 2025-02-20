@@ -45,10 +45,6 @@ const Compras = () => {
   const canjeados = compras.filter((compra) => compra.status === "canjeado");
   const vencidos = compras.filter((compra) => compra.status === "vencido");
 
-  const generarPDF = (compra) => {
-    console.log(`Generating PDF for coupon ${compra.id}`);
-    // Logic to generate PDF
-  };
 
   return (
     <section className="container mt-4">
@@ -64,7 +60,7 @@ const Compras = () => {
             <p><strong>Title:</strong> {compra.cupones.titulo}</p>
             <p><strong>Code:</strong> {compra.cupones.codigo}</p>
             <p><strong>Purchase Date:</strong> {new Date(compra.fechaCompra.seconds * 1000).toLocaleString()}</p>
-            <button className="btn btn-success" onClick={() => generarPDF(compra)}>Generate PDF</button>
+            <a href={`/recibo/${compra.id}`} className="btn btn-primary">Ver Recibo</a>
           </div>
         ))}
       </div>
