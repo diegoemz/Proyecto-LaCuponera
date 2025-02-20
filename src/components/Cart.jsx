@@ -8,10 +8,22 @@ const Cart = ({ cupones }) => {
     // Merge local storage cupones with current cupones data
     const mergedCupones = cuponesGuardados.map(localCupon => {
       const fullCupon = cupones.find(c => c.id === localCupon.id);
-      return { ...localCupon, ...fullCupon };
+      return { 
+        ...localCupon, 
+        ...fullCupon,
+        quantity: localCupon.quantity || 1 
+      };
     });
     setSavedCupones(mergedCupones);
   }, [cupones]);
+
+  const handleQuantityChange = (cuponId, newQuantity) => {
+    const updatedCupones = savedCupones.map(cupon => 
+      cupon.id === cuponId ? { ...cupon, quantity: Math.max(1, newQuantity) } : cupon
+    );
+    setSavedCupones(updatedCupones);
+    localStorage.setItem('cupones', JSON.stringify(updatedCupones));
+  };
 
   const handleRemoveCupon = (cuponId) => {
     const updatedCupones = savedCupones.filter(cupon => cupon.id !== cuponId);
@@ -21,48 +33,7 @@ const Cart = ({ cupones }) => {
 
   return (
     <>
-    <div className="row">
-    {savedCupones.length > 0 ? (
-      savedCupones.map((cupon) => (
-        <div className="col-md-6 mb-4" key={cupon.id}>
-          <div className="card h-100">
-            <img
-              src={cupon.imagen || "/img/default-cupon.jpg"}
-              className="card-img-top"
-              alt={cupon.titulo}
-              style={{ height: "200px", objectFit: "cover" }}
-            />
-            <div className="card-body">
-              <h5 className="card-title">{cupon.titulo}</h5>
-              <p className="card-text">{cupon.descripcion}</p>
-              
-              <div className="row">
-                <div className="col-md-6">
-                  <p className="card-text"><strong>Precio:</strong> ${cupon.precio}</p>
-                  <p className="card-text"><strong>Descuento:</strong> {cupon.descuento}%</p>
-                  <p className="card-text"><strong>Categoría:</strong> {cupon.categoria}</p>
-                </div>
-              </div>
-
-              <div className="mt-3">
-                <button
-                  className="btn btn-danger w-100"
-                  onClick={() => handleRemoveCupon(cupon.id)}
-                >
-                  Eliminar del carrito
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-      ))
-    ) : (
-      <div className="col-12">
-        <p className="text-center">No hay cupones guardados en el carrito.</p>
-      </div>
-    )}
-  </div>
-    <section className="h-100 h-custom" style={{ backgroundColor: '#eee' }}>
+    <section className="h-100 h-custom">
       <div className="container py-5 h-100">
         <div className="row d-flex justify-content-center align-items-center h-100">
           <div className="col">
@@ -90,151 +61,70 @@ const Cart = ({ cupones }) => {
                       </div>
                     </div>
 
-                    {/* Item 1 */}
-                    <div className="card mb-3">
-                      <div className="card-body">
-                        <div className="d-flex justify-content-between">
-                          <div className="d-flex flex-row align-items-center">
-                            <div>
-                              <img
-                                src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-shopping-carts/img1.webp"
-                                className="img-fluid rounded-3"
-                                alt="Shopping item"
-                                style={{ width: '65px' }}
-                              />
+                    {savedCupones.length > 0 ? (
+                      savedCupones.map((cupon) => (
+                        <div className="card mb-3" key={cupon.id}>
+                          <div className="card-body">
+                            <div className="d-flex justify-content-between">
+                              <div className="d-flex flex-row align-items-center">
+                                <div>
+                                  <img
+                                    src={cupon.imagen || "/img/default-cupon.jpg"}
+                                    className="img-fluid rounded-3"
+                                    alt="Shopping item"
+                                    style={{ width: '65px', height: '65px' }}
+                                  />
+                                </div>
+                                <div className="ms-3">
+                                  <h5>{cupon.titulo}</h5>
+                                  <p className="small mb-0">{cupon.descripcion}</p>
+                                </div>
+                              </div>
+                              <div className="d-flex flex-row align-items-center">
+                                <div className="d-flex align-items-center" style={{ width: '120px' }}>
+                                  <button 
+                                    className="btn btn-sm btn-outline-secondary"
+                                    onClick={() => handleQuantityChange(cupon.id, cupon.quantity - 1)}
+                                  >
+                                    -
+                                  </button>
+                                  <h5 className="fw-normal mb-0 mx-2">{cupon.quantity}</h5>
+                                  <button 
+                                    className="btn btn-sm btn-outline-secondary"
+                                    onClick={() => handleQuantityChange(cupon.id, cupon.quantity + 1)}
+                                  >
+                                    +
+                                  </button>
+                                </div>
+                                <div style={{ width: '80px' }}>
+                                  <h5 className="mb-0">${(cupon.precioOferta * cupon.quantity).toFixed(2)}</h5>
+                                </div>
+                                <a 
+                                  href="#!" 
+                                  style={{ color: '#cecece' }}
+                                  onClick={() => handleRemoveCupon(cupon.id)}
+                                >
+                                  <i className="fas fa-trash-alt"></i>
+                                </a>
+                              </div>
                             </div>
-                            <div className="ms-3">
-                              <h5>Iphone 11 pro</h5>
-                              <p className="small mb-0">256GB, Navy Blue</p>
-                            </div>
-                          </div>
-                          <div className="d-flex flex-row align-items-center">
-                            <div style={{ width: '50px' }}>
-                              <h5 className="fw-normal mb-0">2</h5>
-                            </div>
-                            <div style={{ width: '80px' }}>
-                              <h5 className="mb-0">$900</h5>
-                            </div>
-                            <a href="#!" style={{ color: '#cecece' }}>
-                              <i className="fas fa-trash-alt"></i>
-                            </a>
                           </div>
                         </div>
-                      </div>
+                    ))
+                  ) : (
+                    <div className="col-12">
+                      <p className="text-center">No hay cupones guardados en el carrito.</p>
                     </div>
-
-                    {/* Item 2 */}
-                    <div className="card mb-3">
-                      <div className="card-body">
-                        <div className="d-flex justify-content-between">
-                          <div className="d-flex flex-row align-items-center">
-                            <div>
-                              <img
-                                src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-shopping-carts/img2.webp"
-                                className="img-fluid rounded-3"
-                                alt="Shopping item"
-                                style={{ width: '65px' }}
-                              />
-                            </div>
-                            <div className="ms-3">
-                              <h5>Samsung galaxy Note 10</h5>
-                              <p className="small mb-0">256GB, Navy Blue</p>
-                            </div>
-                          </div>
-                          <div className="d-flex flex-row align-items-center">
-                            <div style={{ width: '50px' }}>
-                              <h5 className="fw-normal mb-0">2</h5>
-                            </div>
-                            <div style={{ width: '80px' }}>
-                              <h5 className="mb-0">$900</h5>
-                            </div>
-                            <a href="#!" style={{ color: '#cecece' }}>
-                              <i className="fas fa-trash-alt"></i>
-                            </a>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-
-                    {/* Item 3 */}
-                    <div className="card mb-3">
-                      <div className="card-body">
-                        <div className="d-flex justify-content-between">
-                          <div className="d-flex flex-row align-items-center">
-                            <div>
-                              <img
-                                src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-shopping-carts/img3.webp"
-                                className="img-fluid rounded-3"
-                                alt="Shopping item"
-                                style={{ width: '65px' }}
-                              />
-                            </div>
-                            <div className="ms-3">
-                              <h5>Canon EOS M50</h5>
-                              <p className="small mb-0">Onyx Black</p>
-                            </div>
-                          </div>
-                          <div className="d-flex flex-row align-items-center">
-                            <div style={{ width: '50px' }}>
-                              <h5 className="fw-normal mb-0">1</h5>
-                            </div>
-                            <div style={{ width: '80px' }}>
-                              <h5 className="mb-0">$1199</h5>
-                            </div>
-                            <a href="#!" style={{ color: '#cecece' }}>
-                              <i className="fas fa-trash-alt"></i>
-                            </a>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-
-                    {/* Item 4 */}
-                    <div className="card mb-3 mb-lg-0">
-                      <div className="card-body">
-                        <div className="d-flex justify-content-between">
-                          <div className="d-flex flex-row align-items-center">
-                            <div>
-                              <img
-                                src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-shopping-carts/img4.webp"
-                                className="img-fluid rounded-3"
-                                alt="Shopping item"
-                                style={{ width: '65px' }}
-                              />
-                            </div>
-                            <div className="ms-3">
-                              <h5>MacBook Pro</h5>
-                              <p className="small mb-0">1TB, Graphite</p>
-                            </div>
-                          </div>
-                          <div className="d-flex flex-row align-items-center">
-                            <div style={{ width: '50px' }}>
-                              <h5 className="fw-normal mb-0">1</h5>
-                            </div>
-                            <div style={{ width: '80px' }}>
-                              <h5 className="mb-0">$1799</h5>
-                            </div>
-                            <a href="#!" style={{ color: '#cecece' }}>
-                              <i className="fas fa-trash-alt"></i>
-                            </a>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
+                  )}
                   </div>
 
                   {/* Payment Section */}
                   <div className="col-lg-5">
-                    <div className="card bg-primary text-white rounded-3">
+                    <div className="card text-white rounded-3" style={{ backgroundColor: 'rgb(31, 59, 54)' }}>
                       <div className="card-body">
                         <div className="d-flex justify-content-between align-items-center mb-4">
                           <h5 className="mb-0">Card details</h5>
-                          <img
-                            src="https://mdbcdn.b-cdn.net/img/Photos/Avatars/avatar-6.webp"
-                            className="img-fluid rounded-3"
-                            style={{ width: '45px' }}
-                            alt="Avatar"
-                          />
+    
                         </div>
 
                         <p className="small mb-2">Card type</p>
@@ -314,27 +204,20 @@ const Cart = ({ cupones }) => {
 
                         <hr className="my-4" />
 
-                        <div className="d-flex justify-content-between">
-                          <p className="mb-2">Subtotal</p>
-                          <p className="mb-2">$4798.00</p>
-                        </div>
-
-                        <div className="d-flex justify-content-between">
-                          <p className="mb-2">Shipping</p>
-                          <p className="mb-2">$20.00</p>
-                        </div>
-
                         <div className="d-flex justify-content-between mb-4">
-                          <p className="mb-2">Total(Incl. taxes)</p>
-                          <p className="mb-2">$4818.00</p>
+                          <p className="mb-2">Total</p>
+                          <p className="mb-2">
+                            ${savedCupones.reduce((total, cupon) => 
+                              total + (cupon.precioOferta * cupon.quantity), 0).toFixed(2)}
+                          </p>
                         </div>
 
                         <button
                           type="button"
                           className="btn btn-info btn-block btn-lg"
+                          style={{ backgroundColor: 'rgb(88, 149, 105)', borderColor: 'rgb(88, 149, 105)' }}
                         >
                           <div className="d-flex justify-content-between">
-                            <span>$4818.00</span>
                             <span>
                               Checkout <i className="fas fa-long-arrow-alt-right ms-2"></i>
                             </span>
