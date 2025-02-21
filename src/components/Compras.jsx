@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { db, auth } from "../firebase.js";
 import { collection, getDocs, query, where } from "firebase/firestore";
 import { onAuthStateChanged } from "firebase/auth";
+import { Link } from "react-router-dom";
 
 const Compras = () => {
   const [compras, setCompras] = useState([]);
@@ -116,10 +117,10 @@ const Compras = () => {
                       </dl>
                     </div>
                     <div className="bg-light p-3 border-top">
-                      <a href={`/recibo/${compra.id}`} className="btn btn-outline-success w-100">
+                      <Link to={`/recibo/${compra.id}`} className="btn btn-outline-success w-100">
                         <i className="bi bi-receipt me-2"></i>
                         View Receipt
-                      </a>
+                      </Link>
                     </div>
                   </div>
                 ))
