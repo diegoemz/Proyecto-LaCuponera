@@ -47,44 +47,119 @@ const Compras = () => {
 
 
   return (
-    <section className="container mt-4">
-      <h2 className="text-center">Purchase History</h2>
+    <section className="container py-5">
+      <h2 className="text-center mb-5 fw-bold text-green-600">Purchase History</h2>
 
-      <div className="card p-3">
-        <h3>Available Coupons</h3>
-        {disponibles.length === 0 ? <p>No available coupons.</p> : disponibles.map(compra => (
-          <div key={compra.id} className="mb-3">
-            <h5>Purchase {compra.id}</h5>
-            <p><strong>Total:</strong> ${compra.total.toFixed(2)}</p>
-            <p><strong>Usuario:</strong> {compra.usuario.nombres} {compra.usuario.apellidos}</p>
-            <p><strong>Title:</strong> {compra.cupones.titulo}</p>
-            <p><strong>Code:</strong> {compra.cupones.codigo}</p>
-            <p><strong>Purchase Date:</strong> {new Date(compra.fechaCompra.seconds * 1000).toLocaleString()}</p>
-            <a href={`/recibo/${compra.id}`} className="btn btn-primary">Ver Recibo</a>
+      <div className="row g-4">
+        {/* Available Coupons */}
+        <div className="col-12 col-lg-4">
+          <div className="card border-success shadow-sm">
+            <div className="card-header bg-success text-white">
+              <h3 className="mb-0">
+                <i className="bi bi-wallet2 me-2"></i>
+                Available Coupons ({disponibles.length})
+              </h3>
+            </div>
+            <div className="card-body">
+              {disponibles.length === 0 ? (
+                <div className="text-muted">No available coupons</div>
+              ) : (
+                disponibles.map(compra => (
+                  <div key={compra.id} className="mb-4 p-3 bg-light rounded">
+                    <div className="d-flex justify-content-between align-items-start mb-2">
+                      <h5 className="mb-0 text-truncate">Order #{compra.id.slice(0, 8)}</h5>
+                      <span className="badge bg-success">Active</span>
+                    </div>
+                    <dl className="row mb-2">
+                      <dt className="col-sm-4">Total:</dt>
+                      <dd className="col-sm-8">${compra.total.toFixed(2)}</dd>
+                      
+                      <dt className="col-sm-4">User:</dt>
+                      <dd className="col-sm-8">{compra.usuario.nombres} {compra.usuario.apellidos}</dd>
+                      
+                      <dt className="col-sm-4">Date:</dt>
+                      <dd className="col-sm-8">
+                        {new Date(compra.fechaCompra.seconds * 1000).toLocaleDateString('en-US', {
+                          year: 'numeric',
+                          month: 'short',
+                          day: 'numeric',
+                          hour: '2-digit',
+                          minute: '2-digit'
+                        })}
+                      </dd>
+                    </dl>
+                    <div className="d-grid">
+                      <a href={`/recibo/${compra.id}`} className="btn btn-outline-success">
+                        <i className="bi bi-receipt me-2"></i>
+                        View Receipt
+                      </a>
+                    </div>
+                  </div>
+                ))
+              )}
+            </div>
           </div>
-        ))}
-      </div>
+        </div>
 
-      <div className="card p-3 mt-3">
-        <h3>Redeemed Coupons</h3>
-        {canjeados.length === 0 ? <p>No redeemed coupons.</p> : canjeados.map(compra => (
-          <div key={compra.id} className="mb-3">
-            <h5>Purchase {compra.id}</h5>
-            <p><strong>Total:</strong> ${compra.total.toFixed(2)}</p>
-            <p><strong>Purchase Date:</strong> {new Date(compra.fechaCompra.seconds * 1000).toLocaleString()}</p>
+        {/* Redeemed Coupons */}
+        <div className="col-12 col-lg-4">
+          <div className="card border-warning shadow-sm">
+            <div className="card-header bg-warning text-dark">
+              <h3 className="mb-0">
+                <i className="bi bi-check2-circle me-2"></i>
+                Redeemed Coupons ({canjeados.length})
+              </h3>
+            </div>
+            <div className="card-body">
+              {canjeados.length === 0 ? (
+                <div className="text-muted">No redeemed coupons</div>
+              ) : (
+                canjeados.map(compra => (
+                  <div key={compra.id} className="mb-3 p-3 bg-light rounded">
+                    <div className="d-flex justify-content-between align-items-start mb-2">
+                      <h6 className="mb-0 text-truncate">Order #{compra.id.slice(0, 8)}</h6>
+                      <span className="badge bg-warning text-dark">Redeemed</span>
+                    </div>
+                    <p className="mb-1">Total: ${compra.total.toFixed(2)}</p>
+                    <small className="text-muted">
+                      {new Date(compra.fechaCompra.seconds * 1000).toLocaleDateString()}
+                    </small>
+                  </div>
+                ))
+              )}
+            </div>
           </div>
-        ))}
-      </div>
+        </div>
 
-      <div className="card p-3 mt-3">
-        <h3>Expired Coupons</h3>
-        {vencidos.length === 0 ? <p>No expired coupons.</p> : vencidos.map(compra => (
-          <div key={compra.id} className="mb-3">
-            <h5>Purchase {compra.id}</h5>
-            <p><strong>Total:</strong> ${compra.total.toFixed(2)}</p>
-            <p><strong>Purchase Date:</strong> {new Date(compra.fechaCompra.seconds * 1000).toLocaleString()}</p>
+        {/* Expired Coupons */}
+        <div className="col-12 col-lg-4">
+          <div className="card border-danger shadow-sm">
+            <div className="card-header bg-danger text-white">
+              <h3 className="mb-0">
+                <i className="bi bi-clock-history me-2"></i>
+                Expired Coupons ({vencidos.length})
+              </h3>
+            </div>
+            <div className="card-body">
+              {vencidos.length === 0 ? (
+                <div className="text-muted">No expired coupons</div>
+              ) : (
+                vencidos.map(compra => (
+                  <div key={compra.id} className="mb-3 p-3 bg-light rounded">
+                    <div className="d-flex justify-content-between align-items-start mb-2">
+                      <h6 className="mb-0 text-truncate">Order #{compra.id.slice(0, 8)}</h6>
+                      <span className="badge bg-danger">Expired</span>
+                    </div>
+                    <p className="mb-1">Total: ${compra.total.toFixed(2)}</p>
+                    <small className="text-muted">
+                      {new Date(compra.fechaCompra.seconds * 1000).toLocaleDateString()}
+                    </small>
+                  </div>
+                ))
+              )}
+            </div>
           </div>
-        ))}
+        </div>
       </div>
     </section>
   );
