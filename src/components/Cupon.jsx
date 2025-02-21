@@ -1,7 +1,13 @@
 export function Cupon({ cupones }) {
   return (
-    <div className="container my-4">
-      <h2 className="text-center mb-4">Cupones Disponibles</h2>
+    <div className="container my-5">
+      <div className="text-center mb-5">
+        <h2 className="display-4 fw-bold">Cupones Disponibles</h2>
+        <div className="d-inline-block">
+          <div className="border-bottom border-primary border-3 w-50 mx-auto"></div>
+        </div>
+        <p className="lead mt-3 text-muted">Descubre nuestras mejores ofertas y ahorra</p>
+      </div>
       <div className="row">
         {cupones.length > 0 ? (
           cupones.map((cupon) => (
