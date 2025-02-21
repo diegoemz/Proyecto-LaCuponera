@@ -93,7 +93,7 @@ const Checkout = () => {
                       {user ? (
                         <>
                           <span className="font-weight-bold d-block mt-4">Hola, {user.nombres} {user.apellidos}</span>
-                          <span>Tu compra ha sido confirmada y se procesará en breve.</span>
+                          <span>Confirma tu compra y se procesará en breve.</span>
                           <hr />
 
                           <div className="payment-details table-responsive">
