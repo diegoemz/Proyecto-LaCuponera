@@ -217,6 +217,7 @@ const Cart = ({ cupones }) => {
                                 className="form-control form-control-lg"
                                 placeholder="1234 5678 9012 3457"
                                 value={cardNumber}
+                                maxLength={19}
                                 onChange={(e) => setCardNumber(formatCardNumber(e.target.value))}
                                 onBlur={() => {
                                   if (cardNumber.replace(/\s/g, '').length !== 16) {
@@ -242,6 +243,7 @@ const Cart = ({ cupones }) => {
                                     id="typeExp"
                                     className="form-control form-control-lg"
                                     placeholder="MM/YYYY"
+                                    maxLength={7}
                                     value={expiration}
                                     onChange={(e) => setExpiration(e.target.value)}
                                     onBlur={() => {
@@ -268,6 +270,7 @@ const Cart = ({ cupones }) => {
                                     className="form-control form-control-lg"
                                     placeholder="&#9679;&#9679;&#9679;"
                                     value={cvv}
+                                    maxLength={3}
                                     onChange={(e) => setCvv(e.target.value)}
                                     onBlur={() => {
                                       if (!/^\d{3}$/.test(cvv)) {
