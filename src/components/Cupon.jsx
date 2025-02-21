@@ -7,19 +7,19 @@ export function Cupon({ cupones }) {
         {cupones.length > 0 ? (
           cupones.map((cupon) => (
             <div className="col-md-4 mb-4" key={cupon.id}>
-              <div className="card h-100">
+              <div className="card h-100 shadow-lg rounded-lg overflow-hidden">
                 <img
                   src={cupon.imagen || "/img/default-cupon.jpg"}
                   className="card-img-top"
                   alt={cupon.titulo}
                   style={{ height: "200px", objectFit: "cover" }}
                 />
-                <div className="card-body">
-                  <h5 className="card-title">{cupon.titulo}</h5>
-                  <p className="card-text">{cupon.descripcion}</p>
-                  <div className="d-flex justify-content-between">
+                <div className="card-body p-4">
+                  <h5 className="card-title font-bold text-lg">{cupon.titulo}</h5>
+                  <p className="card-text text-gray-700">{cupon.descripcion}</p>
+                  <div className="d-flex justify-content-between mt-3">
                     <button 
-                      className="btn btn-primary"
+                      className="btn btn-success"
                       onClick={() => {
                         const cuponesGuardados = JSON.parse(localStorage.getItem('cupones') || '[]');
                         if (!cuponesGuardados.some(c => c.id === cupon.id)) {
