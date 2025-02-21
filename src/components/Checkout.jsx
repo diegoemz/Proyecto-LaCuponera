@@ -114,6 +114,12 @@ const Checkout = () => {
                                   </td>
                                   <td>
                                     <div className="py-2">
+                                      <span className="d-block text-muted">Email</span>
+                                      <span>{user.email}</span>
+                                    </div>
+                                  </td>
+                                  <td>
+                                    <div className="py-2">
                                       <span className="d-block text-muted">DUI</span>
                                       <span>{user.dui}</span>
                                     </div>
@@ -139,11 +145,7 @@ const Checkout = () => {
                                         <span>Descripción: {cupon.descripcion}</span>
                                       </div> <hr />
                                     </td>
-                                    <td width="20%">
-                                      <div className="text-center">
-                                        <span className="font-weight-bold">{cupon.codigo}</span>
-                                      </div>
-                                    </td>
+           
                                   </tr>
                                 ))}
                               </tbody>
