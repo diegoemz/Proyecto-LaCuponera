@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { db } from "../firebase.js";
 import { doc, getDoc } from "firebase/firestore";
+import jsPDF from 'jspdf';
 
 const Recibo = () => {
   const { id } = useParams();
@@ -29,6 +30,85 @@ const Recibo = () => {
     obtenerRecibo();
   }, [id]);
 
+  const exportPDF = () => {
+    if (!recibo) {
+      console.error("No receipt data available");
+      return;
+    }
+  
+    try {
+      const doc = new jsPDF();
+      const pageWidth = doc.internal.pageSize.width;
+      doc.setFontSize(10);
+  
+      // Header
+      doc.setFont(undefined, 'bold');
+      doc.text('INVOICE', pageWidth / 2, 20, { align: 'center' });
+      doc.setFont(undefined, 'normal');
+      doc.text(`Invoice ID: #${id}`, 20, 30);
+      doc.text(`Date: ${new Date(recibo.fechaCompra.seconds * 1000).toLocaleString()}`, pageWidth - 20, 30, { align: 'right' });
+  
+      // Customer Information
+      doc.setFont(undefined, 'bold');
+      doc.text('Bill To:', 20, 45);
+      doc.setFont(undefined, 'normal');
+      doc.text(`${recibo.usuario.nombres} ${recibo.usuario.apellidos}`, 20, 52);
+      doc.text(recibo.usuario.direccion, 20, 59);
+      doc.text(`Phone: ${recibo.usuario.telefono}`, 20, 66);
+  
+      // Invoice Details
+      doc.setFont(undefined, 'bold');
+      doc.text('Invoice Details:', 20, 80);
+      doc.setFont(undefined, 'normal');
+      doc.text(`Status: ${recibo.status}`, 20, 87);
+      doc.text(`Total Paid: $${recibo.total.toFixed(2)}`, 20, 94);
+  
+// Table
+let yPos = 110;
+doc.setFillColor(230, 230, 230);
+doc.rect(20, yPos, pageWidth - 40, 7, 'F');
+doc.setFont(undefined, 'bold');
+doc.text('Coupon', 22, yPos + 5);
+doc.text('Qty', 90, yPos + 5);
+doc.text('Price', 110, yPos + 5);
+doc.text('Code', 135, yPos + 5);
+doc.text('Total', 170, yPos + 5);
+
+// Table content
+doc.setFont(undefined, 'normal');
+recibo.cupones.forEach((cupon, index) => {
+  yPos += 10;
+  doc.text(cupon.titulo.substring(0, 30), 22, yPos); // Limit title length
+  doc.text(cupon.quantity.toString(), 92, yPos, { align: 'right' });
+  doc.text(`$${cupon.precioOferta.toFixed(2)}`, 112, yPos, { align: 'right' });
+  doc.text(cupon.codigo, 137, yPos);
+  doc.text(`$${(cupon.quantity * cupon.precioOferta).toFixed(2)}`, 172, yPos, { align: 'right' });
+
+  // Add a light gray line between rows
+  if (index < recibo.cupones.length - 1) {
+    yPos += 2;
+    doc.setDrawColor(200, 200, 200);
+    doc.line(20, yPos, pageWidth - 20, yPos);
+    yPos += 2;
+  }
+});
+  
+      // Total
+      yPos += 20;
+      doc.line(20, yPos - 5, pageWidth - 20, yPos - 5);
+      doc.setFont(undefined, 'bold');
+      doc.text(`Total: $${recibo.total.toFixed(2)}`, pageWidth - 20, yPos, { align: 'right' });
+  
+      // Footer
+      doc.setFont(undefined, 'normal');
+      doc.text('Thank you for your purchase!', pageWidth / 2, yPos + 20, { align: 'center' });
+  
+      doc.save(`invoice_${id}.pdf`);
+    } catch (error) {
+      console.error("Error generating PDF:", error);
+    }
+  };
+
   if (loading) return <p>Cargando recibo...</p>;
   if (!recibo) return <p>Recibo no encontrado.</p>;
 
@@ -49,7 +129,7 @@ const Recibo = () => {
                   <button className="btn btn-light text-capitalize border-0">
                     <i className="fas fa-print text-primary"></i> Print
                   </button>
-                  <button className="btn btn-light text-capitalize">
+                  <button className="btn btn-light text-capitalize" onClick={exportPDF}>
                     <i className="far fa-file-pdf text-danger"></i> Export
                   </button>
                 </div>
