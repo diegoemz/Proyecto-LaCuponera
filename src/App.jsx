@@ -8,7 +8,7 @@ import { onAuthStateChanged, signOut } from "firebase/auth";
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 import { Header } from "./components/Header.jsx";
 import { Carousel } from "./components/Carousel.jsx";
-import { Cupon } from "./components/cupon.jsx";
+import { Cupon } from "./components/Cupon.jsx";
 import { Footer } from "./components/footer.jsx";
 import { Form } from "./components/Form.jsx";
 import Cart from "./components/Cart.jsx";
