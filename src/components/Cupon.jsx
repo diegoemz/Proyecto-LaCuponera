@@ -1,16 +1,61 @@
+import React, { useState } from "react";
+
 export function Cupon({ cupones }) {
+  const [categoriaSeleccionada, setCategoriaSeleccionada] = useState("all");
+
+  // Filtrar cupones por categoría seleccionada
+  const cuponesFiltrados =
+    categoriaSeleccionada === "all"
+      ? cupones
+      : cupones.filter((cupon) => cupon.categoria.toLowerCase() === categoriaSeleccionada.toLowerCase());
+
+  // Obtener categorías únicas de los cupones
+  const categorias = [...new Set(cupones.map((cupon) => cupon.categoria))];
+
   return (
     <div className="container my-5">
       <div className="container text-center py-5" style={{ background: "linear-gradient(to bottom, #4caf50,rgb(118, 198, 122))", borderRadius: "10px", boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)" }}>
         <h2 className="display-4 font-weight-bold text-white">Cupones Disponibles</h2>
-        <div className="d-flex justify-content-center mt-2">
-        </div>
         <p className="mt-4 lead text-white">Descubre nuestras mejores ofertas y ahorra</p>
       </div>
-      <hr/>
+      <hr />
+
+      {/* Filtro de Categorías con dropdown estilizado */}
+      <div className="d-flex justify-content-center mb-4">
+        <div className="dropdown">
+          <button
+            className="btn btn-outline-success dropdown-toggle"
+            type="button"
+            id="dropdownMenuButton"
+            data-bs-toggle="dropdown"
+            aria-expanded="false"
+          >
+            {categoriaSeleccionada === "all" ? "Todas las categorías" : categorias.find(c => c.toLowerCase() === categoriaSeleccionada).toUpperCase()}
+          </button>
+          <ul className="dropdown-menu" aria-labelledby="dropdownMenuButton">
+            <li>
+              <button className="dropdown-item" onClick={() => setCategoriaSeleccionada("all")}>
+                Todas las categorías
+              </button>
+            </li>
+            {categorias.map((categoria, index) => (
+              <li key={index}>
+                <button
+                  className={`dropdown-item ${categoriaSeleccionada === categoria.toLowerCase() ? "active" : ""}`}
+                  onClick={() => setCategoriaSeleccionada(categoria.toLowerCase())}
+                >
+                  {categoria}
+                </button>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </div>
+
+      {/* Mostrar los cupones filtrados */}
       <div className="row">
-        {cupones.length > 0 ? (
-          cupones.map((cupon) => (
+        {cuponesFiltrados.length > 0 ? (
+          cuponesFiltrados.map((cupon) => (
             <div className="col-md-4 mb-4" key={cupon.id}>
               <div className="card h-100 shadow border-0 rounded-lg overflow-hidden">
                 <img

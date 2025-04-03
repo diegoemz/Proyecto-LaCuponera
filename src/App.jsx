@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
-import { BrowserRouter as Router, Routes, Route, useParams } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route, useParams, Link } from "react-router-dom";
 import { db, auth } from "./firebase.js";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '@fortawesome/fontawesome-free/css/all.min.css';
-import { collection, getDocs } from "firebase/firestore";
+import { collection, getDocs, query, where } from "firebase/firestore"; // Se importa query y where para filtrar
 import { onAuthStateChanged, signOut } from "firebase/auth";
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 import { Header } from "./components/Header.jsx";
@@ -16,29 +16,35 @@ import Checkout from "./components/Checkout.jsx";
 import Recibo from "./components/Recibo.jsx";
 import Compras from "./components/Compras.jsx";
 
+// Componente para filtrar cupones por categoría
 function CategoriaCupones({ cupones }) {
   let { categoria } = useParams();
-  const cuponesFiltrados = cupones.filter(cupon => cupon.categoria.toLowerCase() === categoria.toLowerCase());
+  const cuponesFiltrados = categoria
+    ? cupones.filter(cupon => cupon.categoria.toLowerCase() === categoria.toLowerCase())
+    : cupones;
 
-  return (
-    <>
-      <Cupon cupones={cuponesFiltrados} />
-    </>
-  );
+  return <Cupon cupones={cuponesFiltrados} />;
 }
 
 function App() {
   const [cupones, setCupones] = useState([]);
+  const [categorias, setCategorias] = useState([]);
   const [usuario, setUsuario] = useState(null);
   const [mostrarForm, setMostrarForm] = useState(false);
   const [alerta, setAlerta] = useState(null);
 
+  // Cargar cupones aprobados y activos
   useEffect(() => {
     const obtenerCupones = async () => {
       try {
-        const querySnapshot = await getDocs(collection(db, "cupones"));
+        // Filtrar cupones aprobados y activos
+        const querySnapshot = await getDocs(query(collection(db, "cupones"), where("estado", "==", "Oferta aprobada"), where("estadoInterno", "==", "Activas")));
         const cuponesData = querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
         setCupones(cuponesData);
+
+        // Obtener categorías únicas de los cupones
+        const categoriasData = [...new Set(cuponesData.map(cupon => cupon.categoria))];
+        setCategorias(categoriasData);
       } catch (error) {
         console.error("Error al obtener cupones:", error);
       }
@@ -46,6 +52,7 @@ function App() {
     obtenerCupones();
   }, []);
 
+  // Manejar el estado de sesión del usuario
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       if (user) {
@@ -61,6 +68,7 @@ function App() {
     return () => unsubscribe();
   }, []);
 
+  // Cerrar sesión
   const handleSignOut = async () => {
     try {
       await signOut(auth);
@@ -74,7 +82,7 @@ function App() {
     <Router>
       <div style={{ backgroundColor: "rgb(228, 231, 222)", minHeight: "100vh" }}>
         <Header usuario={usuario} onSignInClick={() => setMostrarForm(true)} onSignOutClick={handleSignOut} />
-        
+
         {alerta && (
           <div className="alert alert-info text-center" role="alert">
             {alerta}
