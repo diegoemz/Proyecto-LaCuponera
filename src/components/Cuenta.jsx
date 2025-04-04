@@ -67,7 +67,7 @@ const Cuenta = () => {
   if (!usuario) return <div>Cargando...</div>;
 
   return (
-    <div className="container mt-5">
+    <div className="container mt-5 mb-5">
       <h4 className="text-center mb-4">Mi Cuenta</h4>
       <div className="card shadow-sm rounded-4 p-4">
         <div className="mb-3">

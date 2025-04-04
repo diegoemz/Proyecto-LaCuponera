@@ -59,10 +59,10 @@ const Compras = () => {
   if (compras.length === 0) return (
     <div className="container mt-5">
       <div className="alert alert-info" role="alert">
-        <h4 className="alert-heading">No Purchases Found</h4>
-        <p>It looks like you haven't made any purchases yet.</p>
+        <h4 className="alert-heading">No encontramos compras</h4>
+        <p>Parece que no has hecho ninguna compra todavia.</p>
         <hr />
-        <p className="mb-0">Start shopping to see your purchase history here!</p>
+        <p className="mb-0">Empieza a comprar ofertas para poder ver el historial!</p>
       </div>
     </div>
   );
