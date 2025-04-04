@@ -40,7 +40,12 @@ export function Header({ usuario, onSignInClick }) {
               </Link>
 
               {usuario ? (
-                <button className="btn btn-outline-danger mx-3" onClick={handleSignOut}>Cerrar Sesión</button>
+                <>
+                  <Link to="/mi-cuenta" className="text-decoration-none mx-3">
+                    <button className="btn btn-outline-success">Mi Cuenta</button>
+                  </Link>
+                  <button className="btn btn-outline-danger mx-3" onClick={handleSignOut}>Cerrar Sesión</button>
+                </>
               ) : (
                 <button className="btn btn-outline-dark mx-3" onClick={onSignInClick}>Iniciar Sesión</button>
               )}

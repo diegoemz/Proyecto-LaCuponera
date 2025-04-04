@@ -13,6 +13,8 @@ import Compras from "./components/Compras.jsx";
 import { Login } from "./components/Login.jsx";  
 import { useAuth } from "./hooks/useAuth";  
 import { useCupones } from "./hooks/useCupones"; // Importar el hook personalizado
+import Cuenta from "./components/Cuenta.jsx";  // Ruta al componente de cuenta
+
 
 import { CuponDetalle } from "./components/CuponDetalle.jsx"; // Importar el componente de detalles del cupón
 import { CategoriaCupones } from "./components/CategoriaCupones.jsx"; // Importar el componente para filtrar por categoría
@@ -53,6 +55,7 @@ function App() {
           <Route path="/category/:categoria" element={<CategoriaCupones cupones={cupones} />} />
           <Route path="/recibo/:id" element={<Recibo />} />
           <Route path="/cupon/:id" element={<CuponDetalle />} /> {/* Ruta de detalles del cupón */}
+          <Route path="/mi-cuenta" element={<Cuenta />} />
         </Routes>
 
         <Footer />
