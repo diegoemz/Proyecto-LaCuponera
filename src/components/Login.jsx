@@ -47,7 +47,14 @@ export function Login({ onAuthSuccess, onCloseForm }) {
         navigate("/");
       }
     } catch (error) {
-      setError(error.message);
+      // Mostrar un mensaje de error más claro
+      if (error.code === "auth/user-not-found") {
+        setError("El usuario no existe. ¿Quieres registrarte?");
+      } else if (error.code === "auth/wrong-password") {
+        setError("Contraseña incorrecta. Intenta de nuevo.");
+      } else {
+        setError("Ocurrió un error. Por favor, intenta más tarde.");
+      }
     }
   };
 
@@ -55,11 +62,17 @@ export function Login({ onAuthSuccess, onCloseForm }) {
     <div className="container d-flex justify-content-center mt-5">
       <div
         className="card p-4 shadow-lg"
-        style={{ width: "30rem", backgroundColor: "#f8f9fa", maxHeight: "80vh", overflowY: "auto", borderRadius: "10px" }}
+        style={{
+          width: "30rem",
+          backgroundColor: "#f8f9fa",
+          maxHeight: "80vh",
+          overflowY: "auto",
+          borderRadius: "10px",
+        }}
       >
         <button className="btn-close" onClick={onCloseForm}></button>
         <h2 className="text-center mb-4">{isRegister ? "Registrarse" : "Iniciar Sesión"}</h2>
-        
+
         {error && <div className="alert alert-danger">{error}</div>}
 
         <form onSubmit={handleAuth}>
@@ -128,7 +141,7 @@ export function Login({ onAuthSuccess, onCloseForm }) {
               required
             />
           </div>
-          
+
           <div className="mb-3">
             <label className="form-label">Contraseña</label>
             <input
@@ -140,7 +153,9 @@ export function Login({ onAuthSuccess, onCloseForm }) {
             />
           </div>
 
-          <button type="submit" className="btn btn-success w-100">{isRegister ? "Registrarse" : "Iniciar Sesión"}</button>
+          <button type="submit" className="btn btn-success w-100">
+            {isRegister ? "Registrarse" : "Iniciar Sesión"}
+          </button>
         </form>
 
         <button
