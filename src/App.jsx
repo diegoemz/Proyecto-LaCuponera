@@ -1,20 +1,19 @@
-import React, { useEffect, useState } from "react";
-import { BrowserRouter as Router, Routes, Route, useParams, Link } from "react-router-dom";
-import { db, auth } from "./firebase.js";
+import React, { useState, useEffect } from "react";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { db, auth } from "./firebase.js";  // Importar Firebase
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '@fortawesome/fontawesome-free/css/all.min.css';
-import { collection, getDocs, query, where } from "firebase/firestore"; // Se importa query y where para filtrar
-import { onAuthStateChanged, signOut } from "firebase/auth";
-import 'bootstrap/dist/js/bootstrap.bundle.min.js';
+import { collection, getDocs, query, where } from "firebase/firestore"; 
+import { onAuthStateChanged, signOut } from "firebase/auth"; // Importar autenticación de Firebase
 import { Header } from "./components/Header.jsx";
 import { Carousel } from "./components/Carousel.jsx";
 import { Cupon } from "./components/Cupon.jsx";
 import { Footer } from "./components/Footer.jsx";
-import { Form } from "./components/Form.jsx";
 import Cart from "./components/Cart.jsx";
 import Checkout from "./components/Checkout.jsx";
 import Recibo from "./components/Recibo.jsx";
 import Compras from "./components/Compras.jsx";
+import { Login } from "./components/Login.jsx";  // Importamos Login
 
 // Componente para filtrar cupones por categoría
 function CategoriaCupones({ cupones }) {
@@ -37,12 +36,10 @@ function App() {
   useEffect(() => {
     const obtenerCupones = async () => {
       try {
-        // Filtrar cupones aprobados y activos
         const querySnapshot = await getDocs(query(collection(db, "cupones"), where("estado", "==", "Oferta aprobada"), where("estadoInterno", "==", "Activas")));
         const cuponesData = querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
         setCupones(cuponesData);
 
-        // Obtener categorías únicas de los cupones
         const categoriasData = [...new Set(cuponesData.map(cupon => cupon.categoria))];
         setCategorias(categoriasData);
       } catch (error) {
@@ -68,7 +65,6 @@ function App() {
     return () => unsubscribe();
   }, []);
 
-  // Cerrar sesión
   const handleSignOut = async () => {
     try {
       await signOut(auth);
@@ -91,7 +87,7 @@ function App() {
 
         {mostrarForm && !usuario && (
           <div style={{ position: "fixed", top: 0, left: 0, right: 0, bottom: 0, backgroundColor: "rgba(0, 0, 0, 0.5)", zIndex: 1000 }}>
-            <Form onAuthSuccess={() => { setUsuario(auth.currentUser); setMostrarForm(false); }} onCloseForm={() => setMostrarForm(false)} />
+            <Login onAuthSuccess={() => { setUsuario(auth.currentUser); setMostrarForm(false); }} onCloseForm={() => setMostrarForm(false)} />
           </div>
         )}
 
