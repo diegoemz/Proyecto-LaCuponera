@@ -1,24 +1,20 @@
 import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { useCupones } from "../hooks/useCupones"; // Hook para obtener cupones
-
+import { useCupones } from "../hooks/useCupones"; 
 export function CuponDetalle() {
-  const { id } = useParams(); // Obtener el ID del cupón de la URL
-  const navigate = useNavigate(); // Hook para navegar hacia atrás
-  const { cupones } = useCupones(); // Obtener todos los cupones
+  const { id } = useParams(); 
+  const navigate = useNavigate(); 
+  const { cupones } = useCupones(); 
 
-  // Buscar el cupón por ID
   const cuponSeleccionado = cupones.find(cupon => cupon.id === id);
 
   const [cantidad, setCantidad] = useState(1);
 
-  // Funciones para aumentar y disminuir la cantidad
   const aumentarCantidad = () => setCantidad(cantidad + 1);
   const disminuirCantidad = () => {
     if (cantidad > 1) setCantidad(cantidad - 1);
   };
 
-  // Agregar al carrito
   const agregarAlCarrito = () => {
     const cuponesGuardados = JSON.parse(localStorage.getItem('carrito') || '[]');
     cuponesGuardados.push({ ...cuponSeleccionado, cantidad });
@@ -26,7 +22,6 @@ export function CuponDetalle() {
     alert("Cupón agregado al carrito");
   };
 
-  // Si el cupón no existe, mostrar un mensaje de error
   if (!cuponSeleccionado) {
     return <p>El cupón no fue encontrado.</p>;
   }

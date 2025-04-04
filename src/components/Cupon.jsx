@@ -1,27 +1,24 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom"; // Importamos Link para la navegación
+import { Link } from "react-router-dom";
 
 export function Cupon({ cupones }) {
   const [categoriaSeleccionada, setCategoriaSeleccionada] = useState("all");
 
-  // Filtrar cupones por categoría seleccionada
   const cuponesFiltrados =
     categoriaSeleccionada === "all"
       ? cupones
       : cupones.filter((cupon) => cupon.categoria.toLowerCase() === categoriaSeleccionada.toLowerCase());
 
-  // Obtener categorías únicas de los cupones
   const categorias = [...new Set(cupones.map((cupon) => cupon.categoria))];
 
   return (
-    <div className="container my-5">
-      <div className="container text-center py-5" style={{ background: "linear-gradient(to bottom, #4caf50,rgb(118, 198, 122))", borderRadius: "10px", boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)" }}>
-        <h2 className="display-4 font-weight-bold text-white">Cupones Disponibles</h2>
-        <p className="mt-4 lead text-white">Descubre nuestras mejores ofertas y ahorra</p>
+    <div className="container">
+      <div className="container text-center py-5">
+        <h2 className="display-4 font-weight-bold text-black">Cupones Disponibles</h2>
+        <p className="mt-4 lead text-black">Descubre nuestras mejores ofertas y ahorra</p>
       </div>
       <hr />
 
-      {/* Filtro de Categorías con dropdown estilizado */}
       <div className="d-flex justify-content-center mb-4">
         <div className="dropdown">
           <button
@@ -53,7 +50,6 @@ export function Cupon({ cupones }) {
         </div>
       </div>
 
-      {/* Mostrar los cupones filtrados */}
       <div className="row">
         {cuponesFiltrados.length > 0 ? (
           cuponesFiltrados.map((cupon) => (
@@ -91,9 +87,8 @@ export function Cupon({ cupones }) {
                       >
                         Obtener cupón
                       </button>
-                      {/* Enlace al detalle del cupón */}
                       <Link
-                        to={`/cupon/${cupon.id}`} // Aquí redirigimos al detalle del cupón
+                        to={`/cupon/${cupon.id}`}
                         className="btn btn-light"
                       >
                         Más información
