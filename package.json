@@ -12,7 +12,7 @@
   "dependencies": {
     "@fortawesome/fontawesome-free": "^6.7.2",
     "@fortawesome/react-fontawesome": "^0.2.2",
-    "bootstrap": "^5.3.3",
+    "bootstrap": "^5.3.4",
     "dom": "^0.0.3",
     "firebase": "^11.3.1",
     "jspdf": "^3.0.0",
