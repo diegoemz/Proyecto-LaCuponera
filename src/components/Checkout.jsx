@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { getAuth } from "firebase/auth";
-import { getFirestore, doc, getDoc, collection, addDoc } from "firebase/firestore";
+import { getFirestore, doc, getDoc, collection, addDoc, updateDoc, increment } from "firebase/firestore";
 import { app } from "../firebase";
 
 const Checkout = () => {
@@ -32,7 +32,6 @@ const Checkout = () => {
 
       const cuponesConCantidad = storedCupones.map((cupon) => ({
         ...cupon,
-        codigo: generarCodigoUnico(),
         quantity: cupon.quantity || 1, // Asegurar que quantity siempre tenga un valor
       }));
 
@@ -50,8 +49,10 @@ const Checkout = () => {
     fetchCupones();
   }, [auth, db]);
 
-  const generarCodigoUnico = () => {
-    return Math.random().toString(36).substr(2, 8).toUpperCase();
+  // Función para generar el código único del cupón
+  const generarCodigoUnico = (empresaId) => {
+    const numeroAleatorio = Math.floor(1000000 + Math.random() * 9000000);  // Genera un número aleatorio de 7 dígitos
+    return `${empresaId}-${numeroAleatorio}`;
   };
 
   const handleConfirmarCompra = async () => {
@@ -61,18 +62,44 @@ const Checkout = () => {
     }
 
     try {
+      // Verificar que haya suficiente cantidad de cupones disponibles
+      for (const cupon of cupones) {
+        if (cupon.cantidadLimite < cupon.quantity) {
+          alert(`No hay suficientes cupones de ${cupon.titulo} disponibles.`);
+          return;
+        }
+      }
+
+      // Crear el código único para cada cupón en la compra
+      const cuponesConCodigo = cupones.map((cupon) => ({
+        ...cupon,
+        codigo: generarCodigoUnico(cupon.empresaId),  // Generar el código concatenando el código de la empresa y un número aleatorio
+      }));
+
+      // Confirmar la compra
       const compraRef = await addDoc(collection(db, "cupones-comprados"), {
         usuario: user,
-        cupones: cupones,
+        cupones: cuponesConCodigo,
         total: total,
         fechaCompra: new Date(),
-        status: "active" // Add status field
+        status: "active" // Agregar el estado de la compra
       });
 
+      // Actualizar los cupones en Firestore (disminuir los disponibles y aumentar los vendidos)
+      for (const cupon of cupones) {
+        const cuponRef = doc(db, "cupones", cupon.id);
+        await updateDoc(cuponRef, {
+          cuponesVendidos: increment(cupon.quantity),  // Aumentar los cupones vendidos
+          cantidadLimite: increment(-cupon.quantity)   // Disminuir los cupones disponibles
+        });
+      }
+
+      // Limpiar carrito local
       localStorage.removeItem("cupones");
 
       alert("Compra realizada con éxito.");
-      navigate(`/recibo/${compraRef.id}`);
+      navigate(`/recibo/${compraRef.id}`);  // Redirigir a la página de recibo
+
     } catch (error) {
       console.error("Error al guardar la compra:", error);
       alert("Hubo un error al procesar la compra.");
@@ -145,7 +172,6 @@ const Checkout = () => {
                                         <span>Descripción: {cupon.descripcion}</span>
                                       </div> <hr />
                                     </td>
-           
                                   </tr>
                                 ))}
                               </tbody>

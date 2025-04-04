@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { Link } from "react-router-dom"; // Importamos Link para la navegación
 
 export function Cupon({ cupones }) {
   const [categoriaSeleccionada, setCategoriaSeleccionada] = useState("all");
@@ -90,23 +91,13 @@ export function Cupon({ cupones }) {
                       >
                         Obtener cupón
                       </button>
-                      <button
+                      {/* Enlace al detalle del cupón */}
+                      <Link
+                        to={`/cupon/${cupon.id}`} // Aquí redirigimos al detalle del cupón
                         className="btn btn-light"
-                        type="button"
-                        data-bs-toggle="collapse"
-                        data-bs-target={`#info-${cupon.id}`}
-                        aria-expanded="false"
-                        aria-controls={`info-${cupon.id}`}
                       >
                         Más información
-                      </button>
-                    </div>
-                    <div className="collapse mt-3" id={`info-${cupon.id}`}>
-                      <ul className="list-group">
-                        <li className="list-group-item"><strong>Fecha de inicio:</strong> {cupon.fechaInicio ? new Date(cupon.fechaInicio.seconds * 1000).toLocaleDateString() : "No disponible"}</li>
-                        <li className="list-group-item"><strong>Fecha de fin:</strong> {cupon.fechaFin ? new Date(cupon.fechaFin.seconds * 1000).toLocaleDateString() : "No disponible"}</li>
-                        <li className="list-group-item"><strong>Otros detalles:</strong> {cupon.otrosDetalles || "No especificado"}</li>
-                      </ul>
+                      </Link>
                     </div>
                   </div>
                 </div>

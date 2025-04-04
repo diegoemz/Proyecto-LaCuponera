@@ -1,9 +1,7 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import { db } from "./firebase.js";  // Importar Firebase
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '@fortawesome/fontawesome-free/css/all.min.css';
-import { collection, getDocs, query, where } from "firebase/firestore"; 
 import { Header } from "./components/Header.jsx";
 import { Carousel } from "./components/Carousel.jsx";
 import { Cupon } from "./components/Cupon.jsx";
@@ -15,8 +13,9 @@ import Compras from "./components/Compras.jsx";
 import { Login } from "./components/Login.jsx";  
 import { useAuth } from "./hooks/useAuth";  
 import { useCupones } from "./hooks/useCupones"; // Importar el hook personalizado
-import { CategoriaCupones } from "./components/CategoriaCupones.jsx"; // Importar el componente para filtrar por categoría
 
+import { CuponDetalle } from "./components/CuponDetalle.jsx"; // Importar el componente de detalles del cupón
+import { CategoriaCupones } from "./components/CategoriaCupones.jsx"; // Importar el componente para filtrar por categoría
 
 
 //
@@ -29,10 +28,9 @@ function App() {
   // Usamos el hook useAuth
   const { usuario, alerta, handleSignOut } = useAuth();
 
-
   return (
     <Router>
-      <div style={{ backgroundColor: "rgb(228, 231, 222)", minHeight: "100vh" }}>
+      <div>
         <Header usuario={usuario} onSignInClick={() => setMostrarForm(true)} onSignOutClick={handleSignOut} />
 
         {alerta && (
@@ -54,6 +52,7 @@ function App() {
           <Route path="/compras" element={<Compras />} />
           <Route path="/category/:categoria" element={<CategoriaCupones cupones={cupones} />} />
           <Route path="/recibo/:id" element={<Recibo />} />
+          <Route path="/cupon/:id" element={<CuponDetalle />} /> {/* Ruta de detalles del cupón */}
         </Routes>
 
         <Footer />
